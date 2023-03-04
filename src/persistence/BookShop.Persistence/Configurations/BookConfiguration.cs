@@ -22,6 +22,7 @@ internal sealed class BookConfiguration : IEntityTypeConfiguration<Book>
                .IsRequired();
 
         builder.Property(x => x.Price)
+               .HasColumnType("decimal(18,4)")
                .IsRequired();
 
         builder.HasOne(x => x.Author);

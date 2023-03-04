@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookShop.Persistence.Repositories.Implementations;
+using BookShop.Persistence.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,8 @@ public static class Extensions
         {
             options.UseSqlServer(configuration["ConnectionString"]);
         });
+
+        services.AddScoped(typeof(IEFRepository<>), typeof(EFRepository<>));
 
         return services;
     }

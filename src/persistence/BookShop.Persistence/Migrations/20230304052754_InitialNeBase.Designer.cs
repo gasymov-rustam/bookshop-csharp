@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookShop.Persistence.Migrations
 {
     [DbContext(typeof(BookShopDbContext))]
-    [Migration("20230228180412_InitialBookSchema")]
-    partial class InitialBookSchema
+    [Migration("20230304052754_InitialNeBase")]
+    partial class InitialNeBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,10 @@ namespace BookShop.Persistence.Migrations
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("DepartmentId")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -107,11 +110,15 @@ namespace BookShop.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookShop.Domain.Entities.Department", null)
+                    b.HasOne("BookShop.Domain.Entities.Department", "Department")
                         .WithMany("Books")
-                        .HasForeignKey("DepartmentId");
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("BookShop.Domain.Entities.Department", b =>

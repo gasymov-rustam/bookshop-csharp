@@ -1,0 +1,71 @@
+Create database BookShop
+
+Create Table Author(
+   Id uniqueidentifier Primary Key Not Null,
+   Name nvarchar(256) Not Null,
+   LastName nvarchar(256) Not Null
+)
+
+Create Table Book(
+   Id uniqueidentifier Primary Key Not Null,
+   Name nvarchar(256) Not Null,
+   Description nvarchar(1000) Not Null,
+   Pages int Not Null,
+   Price decimal Not Null,
+   CreatedAt datetime,
+   AuthorId uniqueidentifier Not Null,
+   DepartmentId uniqueidentifier Not Null
+)
+
+Create Table Department(
+   Id uniqueidentifier Primary Key Not Null,
+   Name nvarchar(256) Not Null
+)
+
+Alter Table Book
+  Add Foreign Key (AuthorId) References Author(Id),
+            Foreign Key (DepartmentId) References Department(Id)
+
+SELECT * FROM AUTHOR
+
+INSERT INTO AUTHOR(Id, Name, Lastname) VALUES ('9454bc51-2894-477b-b167-f035f54ba215','EDI', 'Burger'),('b132b929-3ac0-4ee8-948d-df0dca7616e8','Alex', 'Perma'),('6cf65082-273f-4f3d-b8f7-e7ca18928e77','Vlad', 'Ivanov');
+
+SELECT * FROM DEPARTMENT
+
+INSERT INTO DEPARTMENT(Id, Name) VALUES ('3dd77b27-6e15-497e-9a0e-bf33a59564fb', 'Sales'), ('b17aba6a-954a-4f4e-bc15-000fb460301f', 'Products');
+
+SELECT * FROM Book
+
+INSERT INTO Book(Id, Name, Description, Pages, Price, CreatedAt, AuthorId, DepartmentId) VALUES 
+('cffca98f-a506-414e-a93d-bed899874a18', 'Green yard', '', 542, 1000, '2023-3-3', '9454bc51-2894-477b-b167-f035f54ba215', '3dd77b27-6e15-497e-9a0e-bf33a59564fb'),
+('c9d52bd7-7380-4809-bba7-c02998015ef8', 'Yellow yard', '', 252, 1200, '2023-2-3', 'b132b929-3ac0-4ee8-948d-df0dca7616e8', 'b17aba6a-954a-4f4e-bc15-000fb460301f');
+
+UPDATE Author 
+SET Name = 'OOOOOOO' where Id ='6cf65082-273f-4f3d-b8f7-e7ca18928e77';
+
+DELETE FROM Author 
+where Id ='6cf65082-273f-4f3d-b8f7-e7ca18928e77';
+
+ALTER TABLE Book
+  ADD FOREIGN KEY (AuthorId) REFERENCES Author(Id),
+      FOREIGN KEY (DepartmentId) REFERENCES Department(Id);
+
+SELECT * FROM Author WHERE Id <> '9454bc51-2894-477b-b167-f035f54ba215';
+
+SELECT * FROM Book ORDER BY Price;
+
+SELECT * FROM Book ORDER BY Price DESC;
+
+SELECT * FROM Book ORDER BY CreatedAt;
+
+SELECT * FROM Book ORDER BY CreatedAt Desc;
+
+UPDATE Author 
+SET Name = 'OOOOOOO' where Id ='b132b929-3ac0-4ee8-948d-df0dca7616e8' AND LastName = 'Perma';
+
+SELECT Book.Name as name, Book.Pages as pages
+FROM Book
+JOIN Author ON Book.Id = Author.Id
+JOIN Department ON Book.Id = Department.Id
+WHERE Book.pages < 500;
+
